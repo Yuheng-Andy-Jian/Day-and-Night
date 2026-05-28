@@ -1,40 +1,38 @@
 const themeBtn = document.getElementById("themeBtn");
 
-/* Load saved theme */
-if (localStorage.getItem("theme") === "night") {
-
-  document.body.classList.add("night-theme");
-
-  themeBtn.innerHTML = `
-    <i class="fa-solid fa-sun"></i>
-    <span>Day Mode</span>
-  `;
-
-}
-
-/* Toggle theme */
-themeBtn.addEventListener("click", () => {
-
-  document.body.classList.toggle("night-theme");
-
-  if (document.body.classList.contains("night-theme")) {
-
-    localStorage.setItem("theme", "night");
-
+function updateThemeButton(isNightMode) {
+  if (isNightMode) {
     themeBtn.innerHTML = `
       <i class="fa-solid fa-sun"></i>
       <span>Day Mode</span>
     `;
-
   } else {
-
-    localStorage.setItem("theme", "day");
-
     themeBtn.innerHTML = `
       <i class="fa-solid fa-moon"></i>
       <span>Night Mode</span>
     `;
-
   }
+}
 
+const savedTheme = localStorage.getItem("theme");
+
+if (savedTheme === "night") {
+  document.body.classList.add("night-theme");
+  updateThemeButton(true);
+} else {
+  updateThemeButton(false);
+}
+
+themeBtn.addEventListener("click", () => {
+  document.body.classList.toggle("night-theme");
+
+  const isNightMode =
+    document.body.classList.contains("night-theme");
+
+  localStorage.setItem(
+    "theme",
+    isNightMode ? "night" : "day"
+  );
+
+  updateThemeButton(isNightMode);
 });
